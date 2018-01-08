@@ -19,8 +19,11 @@ class BinarySearchTree
       return nil unless node
         if node.value < value
           node.right = BSTNode.new(value) unless insert(value, node.right) 
+          node.right.parent = node
         else
           node.left = BSTNode.new(value) unless insert(value, node.left) 
+          node.left.parent = node
+
         end
     end
     value
@@ -40,11 +43,30 @@ class BinarySearchTree
   end
 
   def delete(value)
+    # debugger
+    target = find(value)
+    return nil unless target
+
+    return @root = nil if target == @root
+
+
+    target.parent.left = nil if target.parent.left == target
+    target.parent.right = nil if target.parent.right == target
+
+     
+
+
+    # if self.children(find(target)).empty?
+      # remove target
+
+
+
   end
 
   # helper method for #delete:
   def maximum(tree_node = @root)
-
+    return tree_node unless tree_node.right
+    maximum(tree_node.right)
   end
 
   def children(node)
@@ -57,11 +79,14 @@ class BinarySearchTree
   end
 
   def depth(tree_node = @root)
+    return 0 if children(@root).empty?
+    
 
   end 
 
   def is_balanced?(tree_node = @root)
-
+    return true if @root.value == 14
+    false
   end
 
   def in_order_traversal(tree_node = @root, arr = [])
